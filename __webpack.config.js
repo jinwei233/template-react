@@ -4,8 +4,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const fg = require('fast-glob');
 
+const CWD = process.cwd();
 const isDevelopment = process.env.NODE_ENV === 'development';
-// const isProduction = process.env.NODE_ENV === 'production';
+
+const babelInclude = [
+  path.resolve(CWD, 'src'),
+];
 
 const entries = fg.sync('src/pages/*/app.jsx');
 const entry = {};
@@ -43,6 +47,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.scss'],
+    mainFields: ['module', 'main'],
   },
   module: {
     rules: [
@@ -87,7 +92,8 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
+        include: babelInclude,
         use: {
           loader: 'babel-loader',
         },
